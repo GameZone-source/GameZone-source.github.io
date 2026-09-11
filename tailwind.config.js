@@ -8,7 +8,7 @@ module.exports = {
         panel: '#101026',
         panelSoft: '#171833',
         line: '#2A2B50',
-        violet: '#8B5CF6',
+        violet: '#7C3AED',
         cyan: '#22D3EE',
         mint: '#10B981',
         amber: '#F59E0B'

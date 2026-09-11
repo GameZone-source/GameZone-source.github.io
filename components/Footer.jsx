@@ -26,7 +26,7 @@ export function Footer() {
           </p>
         </div>
       </div>
-      <div className="border-t border-line py-4 text-center text-xs text-slate-500">
+      <div className="border-t border-line py-4 text-center text-xs text-slate-400">
         GameZone · Reviews com critério
       </div>
     </footer>

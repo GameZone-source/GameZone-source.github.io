@@ -126,7 +126,7 @@ button:disabled {
   }
 
   .button-primary:hover {
-    background: #7c3aed;
+    background: #6d28d9;
     box-shadow: 0 14px 26px -18px rgba(139, 92, 246, 0.85);
   }
 
