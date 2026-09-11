@@ -1,6 +1,7 @@
 import './globals.css'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { SkipLink } from '@/components/SkipLink'
 
 export const metadata = {
   title: 'GameZone | Reviews de Games',
@@ -25,8 +26,9 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
       </head>
       <body>
+        <SkipLink />
         <Navbar />
-        <main className="min-h-screen pt-20">{children}</main>
+        <main id="conteudo-principal" tabIndex="-1" className="min-h-screen pt-20">{children}</main>
         <Footer />
       </body>
     </html>

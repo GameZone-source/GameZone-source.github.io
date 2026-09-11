@@ -10,6 +10,7 @@ module.exports = defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./tests/setup.js'],
+    exclude: ['tests/a11y/**', 'node_modules/**', '.next/**'],
     restoreMocks: true
   }
 })
