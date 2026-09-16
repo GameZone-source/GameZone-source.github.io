@@ -219,7 +219,7 @@ export default async function ReviewDetailPage({ params }) {
                         {item.genre === review.genre ? `Mesmo gênero: ${item.genre}.` : `Alternativa em ${item.genre}.`}
                       </p>
                       <div className="mt-4 flex items-center justify-between border-t border-line pt-3 text-xs font-bold">
-                        <span className="text-slate-500">Preço ref.</span>
+                        <span className="text-slate-400">Preço ref.</span>
                         <span className="text-slate-100">R$ {item.price}</span>
                       </div>
                     </div>
@@ -231,10 +231,15 @@ export default async function ReviewDetailPage({ params }) {
         </main>
 
         <aside className="lg:sticky lg:top-24 lg:self-start" data-review-sidebar>
-          <div className="grid gap-5 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pr-1">
+          <div
+            className="grid gap-5 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pr-1"
+            role="region"
+            aria-label="Informações complementares da review"
+            tabIndex="0"
+          >
             <section className="rounded-lg border border-line bg-panel p-6 text-center shadow-surface">
               <div className="text-6xl font-black leading-none text-mint">{review.score.toFixed(1)}</div>
-              <div className="mt-1 text-sm font-bold text-slate-500">/ 10</div>
+              <div className="mt-1 text-sm font-bold text-slate-400">/ 10</div>
               <div className="mt-4 text-lg text-amber">★★★★★</div>
               <p className="mt-2 text-xs font-black uppercase text-mint">{review.verdictLabel}</p>
             </section>
@@ -244,12 +249,12 @@ export default async function ReviewDetailPage({ params }) {
               <dl className="mt-4 divide-y divide-line">
                 {infoRows.map(([label, value]) => (
                   <div key={label} className="flex items-start justify-between gap-4 py-3 text-sm">
-                    <dt className="shrink-0 text-slate-500">{label}</dt>
+                    <dt className="shrink-0 text-slate-400">{label}</dt>
                     <dd className="text-right font-semibold text-slate-100">{value}</dd>
                   </div>
                 ))}
                 <div className="flex items-start justify-between gap-4 py-3 text-sm">
-                  <dt className="shrink-0 text-slate-500">Nota por critérios</dt>
+                  <dt className="shrink-0 text-slate-400">Nota por critérios</dt>
                   <dd className="text-right font-semibold text-slate-100">{calculatedScore.toFixed(1)}/10</dd>
                 </div>
               </dl>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const initialState = {
   nome: '',
@@ -20,6 +20,9 @@ export function ContactForm() {
   const [status, setStatus] = useState('')
   const [statusType, setStatusType] = useState('info')
   const [errors, setErrors] = useState({})
+  const nomeRef = useRef(null)
+  const emailRef = useRef(null)
+  const mensagemRef = useRef(null)
 
   function updateField(event) {
     const { name, value } = event.target
@@ -47,6 +50,12 @@ export function ContactForm() {
       setErrors(nextErrors)
       setStatusType('error')
       setStatus('Revise os campos destacados antes de enviar.')
+      const firstInvalidField = [
+        ['nome', nomeRef],
+        ['email', emailRef],
+        ['mensagem', mensagemRef]
+      ].find(([field]) => nextErrors[field])
+      firstInvalidField?.[1].current?.focus()
       return
     }
 
@@ -62,6 +71,7 @@ export function ContactForm() {
         <div className="grid gap-2">
           <label className="text-sm font-bold text-slate-200" htmlFor="contato-nome">Nome completo</label>
           <input
+            ref={nomeRef}
             id="contato-nome"
             className="field"
             name="nome"
@@ -74,13 +84,15 @@ export function ContactForm() {
             maxLength={maxLengths.nome}
             aria-invalid={Boolean(errors.nome)}
             aria-describedby={`ajuda-nome${errors.nome ? ' erro-nome' : ''}`}
+            aria-errormessage={errors.nome ? 'erro-nome' : undefined}
           />
-          <span id="ajuda-nome" className="text-xs font-medium text-slate-500">Use o nome que devemos responder.</span>
+          <span id="ajuda-nome" className="text-xs font-medium text-slate-400">Use o nome que devemos responder.</span>
           {errors.nome ? <span id="erro-nome" className="text-xs font-semibold text-red-200">{errors.nome}</span> : null}
         </div>
         <div className="grid gap-2">
           <label className="text-sm font-bold text-slate-200" htmlFor="contato-email">E-mail</label>
           <input
+            ref={emailRef}
             id="contato-email"
             className="field"
             type="email"
@@ -94,8 +106,9 @@ export function ContactForm() {
             inputMode="email"
             aria-invalid={Boolean(errors.email)}
             aria-describedby={`ajuda-email${errors.email ? ' erro-email' : ''}`}
+            aria-errormessage={errors.email ? 'erro-email' : undefined}
           />
-          <span id="ajuda-email" className="text-xs font-medium text-slate-500">Usamos este endereço para responder sua mensagem.</span>
+          <span id="ajuda-email" className="text-xs font-medium text-slate-400">Usamos este endereço para responder sua mensagem.</span>
           {errors.email ? <span id="erro-email" className="text-xs font-semibold text-red-200">{errors.email}</span> : null}
         </div>
       </div>
@@ -111,6 +124,7 @@ export function ContactForm() {
       <div className="grid gap-2">
         <label className="text-sm font-bold text-slate-200" htmlFor="contato-mensagem">Mensagem</label>
         <textarea
+          ref={mensagemRef}
           id="contato-mensagem"
           className="field min-h-40"
           name="mensagem"
@@ -122,9 +136,10 @@ export function ContactForm() {
           maxLength={maxLengths.mensagem}
           aria-invalid={Boolean(errors.mensagem)}
           aria-describedby={`ajuda-mensagem contador-mensagem${errors.mensagem ? ' erro-mensagem' : ''}`}
+          aria-errormessage={errors.mensagem ? 'erro-mensagem' : undefined}
         />
-        <span id="ajuda-mensagem" className="text-xs font-medium text-slate-500">Inclua o jogo, problema ou proposta em uma frase clara.</span>
-        <span id="contador-mensagem" className="text-xs font-medium text-slate-500">{form.mensagem.length}/{maxLengths.mensagem} caracteres</span>
+        <span id="ajuda-mensagem" className="text-xs font-medium text-slate-400">Inclua o jogo, problema ou proposta em uma frase clara.</span>
+        <span id="contador-mensagem" className="text-xs font-medium text-slate-400">{form.mensagem.length}/{maxLengths.mensagem} caracteres</span>
         {errors.mensagem ? <span id="erro-mensagem" className="text-xs font-semibold text-red-200">{errors.mensagem}</span> : null}
       </div>
       <button type="submit" className="button-primary">Enviar sugestão</button>
