@@ -5,6 +5,7 @@ output
 .env*.local
 .vercel
 .DS_Store
+.worktrees/
 test-results/
 playwright-report/
 npm-debug.log*
