@@ -18,7 +18,7 @@ O GameZone é o produto desenvolvido pelo grupo para o Enterprise Challenge da P
 
 Nesta fase, o projeto entrega o primeiro núcleo funcional dessa proposta: um catálogo editorial em que o jogador consegue pesquisar títulos, comparar critérios, consultar análises completas, salvar favoritos e receber sugestões explicáveis. As reviews são escritas pela própria equipe e também ficam disponíveis em um endpoint público.
 
-O fórum, as contas de usuário, a moderação e o chatbot fazem parte da evolução planejada. Essa separação é intencional: o README descreve como concluído apenas aquilo que está implementado e disponível para demonstração.
+O fórum, as contas de usuário e a moderação fazem parte da evolução planejada. Essa separação é intencional: o README descreve como concluído apenas aquilo que está implementado e disponível para demonstração.
 
 ## Funcionalidades
 
@@ -30,8 +30,10 @@ O fórum, as contas de usuário, a moderação e o chatbot fazem parte da evolu�
 - avaliação por critérios, pesos e nota final calculada;
 - favoritos persistidos no navegador;
 - recomendações baseadas em gênero e nota editorial, acompanhadas de uma justificativa;
+- assistente de recomendação em linguagem natural, com IA local e explicável, em `/assistente`;
 - formulário de contato com validação de campos;
 - endpoint público com os dados das reviews;
+- testes automatizados de unidade, componente e acessibilidade (Vitest e Playwright + axe);
 - interface responsiva e publicação automatizada no GitHub Pages.
 
 ## Capturas do produto
@@ -51,6 +53,10 @@ O fórum, as contas de usuário, a moderação e o chatbot fazem parte da evolu�
 ### Descoberta personalizada
 
 ![Área de favoritos e recomendações do GameZone](docs/images/discovery.png)
+
+### Assistente de recomendações
+
+![Assistente de IA explicando uma sugestão de jogo](docs/images/assistente.png)
 
 ## Tecnologias
 
@@ -129,6 +135,7 @@ O retorno contém metadados do catálogo e a lista de reviews, incluindo título
 │   └── workflows/
 │       └── pages.yml           # Build e publicação no GitHub Pages
 ├── app/
+│   ├── assistente/             # Assistente de recomendação com IA local
 │   ├── contato/                # Página de contato
 │   ├── descoberta/             # Favoritos e recomendações
 │   ├── reviews/
@@ -137,6 +144,7 @@ O retorno contém metadados do catálogo e a lista de reviews, incluindo título
 │   ├── layout.jsx              # Layout raiz, navegação e rodapé
 │   └── page.jsx                # Página inicial
 ├── components/                 # Componentes reutilizáveis da interface
+├── lib/                        # Motor de recomendação e lógica do assistente
 ├── data/
 │   └── reviews.js              # Fonte de dados usada pela aplicação
 ├── docs/
@@ -172,14 +180,16 @@ localStorage       ──► favoritos do navegador
 
 ## Recomendação e inteligência artificial
 
-A recomendação atual é determinística e explicável. Ela considera os gêneros presentes nos favoritos, usa a nota editorial na ordenação e acrescenta razões legíveis para cada sugestão. Não há um modelo de inteligência artificial executando no produto atual.
+A recomendação é determinística e explicável. Ela considera os gêneros presentes nos favoritos, usa a nota editorial na ordenação e acrescenta razões legíveis para cada sugestão. O mesmo motor vive em `lib/recommendation.js`, reutilizado pela Descoberta e pelo assistente.
 
-A evolução documentada prevê IA em dois pontos:
+Na rota `/assistente`, o Assistente GameZone interpreta pedidos em português (gênero, plataforma, faixa de preço), cruza com o catálogo e responde com sugestões justificadas. O agente é local e determinístico — não há modelo de linguagem executando — e adota salvaguardas de governança: explicabilidade de cada resposta, limites declarados na interface, fallback honesto quando não há correspondência e base restrita às reviews publicadas pela equipe.
+
+A evolução documentada prevê IA em dois pontos adicionais:
 
 - personalização capaz de reconhecer preferências mais complexas, mantendo a explicação das recomendações;
-- chatbot de suporte para orientar usuários e responder dúvidas sobre a plataforma.
+- moderação assistida por IA na futura comunidade (fórum).
 
-Antes de levar essas funções à produção, o grupo deverá definir origem dos dados, critérios de avaliação, tratamento de respostas inadequadas e limites claros para decisões automatizadas.
+Antes de levar o agente a um modelo de linguagem em produção, o grupo deverá definir origem dos dados, critérios de avaliação, tratamento de respostas inadequadas e limites claros para decisões automatizadas.
 
 ## Segurança
 
@@ -202,10 +212,13 @@ O workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) executa 
 
 **https://gamezone-source.github.io/**
 
-## Material da Atividade 4
+## Entregáveis
 
-A apresentação do pitch, com o roteiro nas notas de cada slide, está em:
+As documentações de cada fase ficam em `entregaveis/`:
 
-[GameZone — Atividade 4 — Pitch](docs/presentation/GameZone_Atividade_4_Pitch.pptx)
+- `entregaveis/fase-5/` — relatório e apresentação da Fase 5 (comunicação, impacto e acessibilidade);
+- `entregaveis/fase-6/` — relatório e apresentação da Fase 6 (análise, integração e impacto), incluindo o planejamento da fase, a tabela de testes e a documentação do Assistente GameZone.
 
-Antes de enviar a atividade à FIAP, o grupo ainda deve adicionar ao primeiro slide o link do vídeo publicado como não listado no YouTube.
+A apresentação do pitch da Atividade 4 permanece em `docs/presentation/`.
+
+Antes de enviar a atividade à FIAP, o grupo ainda deve inserir o link do vídeo publicado como não listado no YouTube no relatório (`entregaveis/fase-6/`) e nos slides.
