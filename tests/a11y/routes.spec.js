@@ -1,7 +1,7 @@
 const { test, expect } = require('playwright/test')
 const AxeBuilder = require('@axe-core/playwright').default
 
-const routes = ['/', '/reviews/', '/reviews/elden-ring/', '/descoberta/', '/sobre/', '/contato/', '/impacto/']
+const routes = ['/', '/reviews/', '/reviews/elden-ring/', '/descoberta/', '/assistente/', '/sobre/', '/contato/', '/impacto/']
 
 for (const route of routes) {
   test(`${route} não possui violações Axe sérias ou críticas`, async ({ page }) => {

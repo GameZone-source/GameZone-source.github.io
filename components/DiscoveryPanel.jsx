@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { ReviewRow } from '@/components/ReviewRow'
+import { buildGenreWeight, rankRecommendations, topFavoriteGenres } from '@/lib/recommendation'
 
 const storageKey = 'gamezone.favoritos'
 
@@ -53,31 +54,12 @@ export function DiscoveryPanel({ reviews }) {
     [favorites, reviews]
   )
 
-  const recommendations = useMemo(() => {
-    const genreWeight = favoriteReviews.reduce((map, review) => {
-      map[review.genre] = (map[review.genre] || 0) + 1
-      return map
-    }, {})
-
-    return reviews
-      .filter((review) => !favorites.includes(review.slug))
-      .map((review) => ({
-        review,
-        score: review.score * 0.9 + (genreWeight[review.genre] || 0) * 1.8,
-        reasons: buildRecommendationReasons(review, genreWeight, favoriteReviews.length)
-      }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3)
-  }, [favoriteReviews, favorites, reviews])
-
-  const topFavoriteGenres = Object.entries(
-    favoriteReviews.reduce((map, review) => {
-      map[review.genre] = (map[review.genre] || 0) + 1
-      return map
-    }, {})
+  const recommendations = useMemo(
+    () => rankRecommendations(reviews, favorites, favoriteReviews),
+    [favoriteReviews, favorites, reviews]
   )
-    .sort((a, b) => b[1] - a[1])
-    .map(([genre]) => genre)
+
+  const favoriteGenres = useMemo(() => topFavoriteGenres(favoriteReviews), [favoriteReviews])
 
   return (
     <div className="space-y-10">
@@ -88,9 +70,9 @@ export function DiscoveryPanel({ reviews }) {
           <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">
             Salve alguns jogos. O GameZone puxa gêneros parecidos, usa a nota editorial como desempate e explica cada sugestão.
           </p>
-          {topFavoriteGenres.length ? (
+          {favoriteGenres.length ? (
             <p className="mt-3 text-sm leading-6 text-slate-400">
-              Seu radar aponta para <span className="font-bold text-cyan">{topFavoriteGenres.slice(0, 2).join(' e ')}</span>.
+              Seu radar aponta para <span className="font-bold text-cyan">{favoriteGenres.slice(0, 2).join(' e ')}</span>.
             </p>
           ) : (
             <p className="mt-3 text-sm leading-6 text-slate-400">
@@ -182,30 +164,4 @@ export function DiscoveryPanel({ reviews }) {
       </section>
     </div>
   )
-}
-
-function buildRecommendationReasons(review, genreWeight, favoriteCount) {
-  const reasons = []
-  const matchingGenreCount = genreWeight[review.genre] || 0
-
-  if (matchingGenreCount) {
-    const favoriteLabel = matchingGenreCount === 1 ? '1 favorito salvo é' : `${matchingGenreCount} favoritos salvos são`
-    reasons.push(`${favoriteLabel} de ${review.genre}.`)
-  } else if (favoriteCount) {
-    reasons.push('Equilibra seu radar com um gênero diferente dos favoritos.')
-  } else {
-    reasons.push('Ainda sem favoritos, usamos a nota editorial como ponto de partida.')
-  }
-
-  if (review.score >= 9) {
-    reasons.push(`Nota editorial ${review.score.toFixed(1)} mantém este jogo no topo.`)
-  } else {
-    reasons.push(`Nota editorial ${review.score.toFixed(1)} sustenta a sugestão.`)
-  }
-
-  if (review.price <= 199) {
-    reasons.push(`Preço ref. R$ ${review.price}, bom para comparar custo-benefício.`)
-  }
-
-  return reasons
 }
