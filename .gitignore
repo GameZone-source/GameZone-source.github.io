@@ -11,3 +11,6 @@ playwright-report/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Entregáveis acadêmicos — mantidos apenas localmente, não publicados
+entregaveis/

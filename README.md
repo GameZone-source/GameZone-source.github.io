@@ -214,11 +214,8 @@ O workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) executa 
 
 ## Entregáveis
 
-As documentações de cada fase ficam em `entregaveis/`:
-
-- `entregaveis/fase-5/` — relatório e apresentação da Fase 5 (comunicação, impacto e acessibilidade);
-- `entregaveis/fase-6/` — relatório e apresentação da Fase 6 (análise, integração e impacto), incluindo o planejamento da fase, a tabela de testes e a documentação do Assistente GameZone.
+As documentações acadêmicas do projeto (relatórios e apresentações de cada fase) não são publicadas neste repositório — ficam em cópia local do grupo e são enviadas à FIAP pela plataforma oficial da disciplina.
 
 A apresentação do pitch da Atividade 4 permanece em `docs/presentation/`.
 
-Antes de enviar a atividade à FIAP, o grupo ainda deve inserir o link do vídeo publicado como não listado no YouTube no relatório (`entregaveis/fase-6/`) e nos slides.
+Antes de enviar a atividade à FIAP, o grupo ainda deve inserir o link do vídeo publicado como não listado no YouTube no relatório e nos slides da fase.
